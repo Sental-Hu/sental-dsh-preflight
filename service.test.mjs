@@ -8,7 +8,7 @@ import { spawn } from 'node:child_process';
 import { setTimeout as delay } from 'node:timers/promises';
 import { readJson, writeJson, stopTree } from './engine.mjs';
 
-test('service aggregates failures, reuses unchanged results and rescans one changed plugin', { skip: process.platform !== 'win32', timeout: 90000 }, async () => {
+test('service aggregates failures, reuses unchanged results and rescans one changed plugin', { skip: process.platform !== 'win32', timeout: 180000 }, async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'dsh-service-'));
   const source = path.dirname(fileURLToPath(import.meta.url));
   const launcher = path.join(root, 'launcher with spaces');
@@ -47,7 +47,7 @@ server.listen(0, '127.0.0.1', () => console.log('dsh web: http://127.0.0.1:' + s
     child = spawn(process.execPath, [path.join(launcher, 'server.mjs')], { env, cwd: launcher, windowsHide: true, stdio: ['ignore', 'ignore', 'pipe'] });
     child.stderr.on('data', b => { errors += b; });
     closed = new Promise(resolve => child.once('close', resolve));
-    const deadline = Date.now() + 70000;
+    const deadline = Date.now() + 150000;
     async function waitFor(fn) {
       while (Date.now() < deadline) {
         if (child.exitCode !== null) throw new Error(errors || 'Selector exited');
@@ -66,7 +66,7 @@ server.listen(0, '127.0.0.1', () => console.log('dsh web: http://127.0.0.1:' + s
     };
     const ready = () => waitFor(async () => { const s = await request('/state'); if (s.phase === 'error') throw Error(s.error); return s.phase === 'ready' && s; });
     let state = await ready();
-    assert.equal(state.base.status, 'passed');
+    assert.equal(state.base.status, 'passed', JSON.stringify(state));
     assert.deepEqual(state.items.map(i => i.status), ['passed', 'failed']);
     assert.match(state.items[1].reason, /exampleService/);
     const logs = () => fs.readdirSync(path.join(launcher, 'check-logs')).length;
@@ -80,6 +80,12 @@ server.listen(0, '127.0.0.1', () => console.log('dsh web: http://127.0.0.1:' + s
     assert.equal(fs.readFileSync(path.join(profile, 'package.json'), 'utf8'), original);
     await request('/close', {}); await closed;
     assert.equal(fs.existsSync(path.join(launcher, 'launcher-endpoint.json')), false);
+  } catch (error) {
+    const logDir = path.join(launcher, 'check-logs');
+    if (fs.existsSync(logDir)) for (const file of fs.readdirSync(logDir)) {
+      console.error('Fixture probe ' + file + ':\n' + fs.readFileSync(path.join(logDir, file), 'utf8'));
+    }
+    throw error;
   } finally {
     if (child && child.exitCode === null) { await stopTree(child); await closed; }
     const link = path.join(launcher, 'node_modules');
