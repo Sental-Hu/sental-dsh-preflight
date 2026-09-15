@@ -1,4 +1,6 @@
-# DSH Launcher
+# Sental DSH Preflight
+
+**简体中文** | [English](README.en.md)
 
 **先看清插件是否能加载，再启动 DeepSeek Harness。**
 
@@ -54,7 +56,7 @@
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install-Launcher.ps1 -RepositoryPath "C:\Projects\deepseek-harness"
 ```
 
-将示例路径替换为自己的 DSH 源码目录。安装脚本验证环境、使用锁定版本安装依赖，并创建桌面上的 **DSH Launcher** 快捷方式。安装过程不启动 DSH，也不修改 DSH profile。
+将示例路径替换为自己的 DSH 源码目录。安装脚本验证环境、使用锁定版本安装依赖，并创建桌面上的 **Sental DSH Preflight** 快捷方式。安装过程不启动 DSH，也不修改 DSH profile。
 
 <details>
 <summary>自定义数据目录或使用其他启动方式</summary>
@@ -75,7 +77,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Launch-DSH.ps1
 
 ### 3. 打开桌面快捷方式
 
-双击 **DSH Launcher**，等检查完成后调整勾选，点击 **启动 DeepSeek Harness**。
+双击 **Sental DSH Preflight**，等检查完成后调整勾选，点击 **启动 DeepSeek Harness**。
 
 首次检查需要实际试加载，耗时会随插件数量和加载速度变化。后续启动复用未变化项目的结果。
 

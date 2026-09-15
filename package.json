@@ -1,5 +1,5 @@
 {
-  "name": "dsh-launcher",
+  "name": "sental-dsh-preflight",
   "version": "0.1.0",
   "private": true,
   "description": "Windows launcher for DeepSeek Harness with parallel plugin checks and change-aware caching",

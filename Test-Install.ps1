@@ -17,7 +17,7 @@ try {
     $config = Get-Content -Raw -Encoding UTF8 -LiteralPath (Join-Path $launcher 'launcher-config.json') | ConvertFrom-Json
     if ($config.repository -ne $repo -or $config.home -ne $homeDirectory) { throw 'Path round-trip failed' }
     if ($before -cne [IO.File]::ReadAllText($profileFile)) { throw 'Installer changed the DSH profile' }
-    if (-not (Test-Path -LiteralPath (Join-Path $root 'DSH Launcher.lnk'))) { throw 'Shortcut missing' }
+    if (-not (Test-Path -LiteralPath (Join-Path $root 'Sental DSH Preflight.lnk'))) { throw 'Shortcut missing' }
     & (Join-Path $launcher 'Install-Launcher.ps1') -RepositoryPath $repo -DshHome $homeDirectory -NoShortcut -SkipDependencyInstall
     if (@(Get-ChildItem -LiteralPath $launcher -Directory -Filter 'install-backup-*').Count -ne 1) { throw 'Reinstall did not back up the config' }
     Write-Output 'PASS: install paths, shortcut, reinstall backup, DSH profile preserved'

@@ -47,7 +47,7 @@ $saved = Get-Content -Raw -Encoding UTF8 -LiteralPath $configFile | ConvertFrom-
 if ($saved.repository -ne $repository -or $saved.home -ne $profileHome) { throw 'Configuration readback failed.' }
 if (-not $NoShortcut) {
     if (-not (Test-Path -LiteralPath $ShortcutDirectory -PathType Container)) { throw 'Shortcut directory does not exist.' }
-    $linkFile = Join-Path $ShortcutDirectory 'DSH Launcher.lnk'
+    $linkFile = Join-Path $ShortcutDirectory 'Sental DSH Preflight.lnk'
     if (Test-Path -LiteralPath $linkFile) {
         Copy-Item -LiteralPath $linkFile -Destination ($linkFile + '.' + (Get-Date -Format 'yyyyMMdd-HHmmssfff') + '.backup')
     }
@@ -62,4 +62,4 @@ if (-not $NoShortcut) {
     if ($check.Arguments -ne $link.Arguments -or $check.TargetPath -ne $link.TargetPath) { throw 'Shortcut readback failed.' }
     Write-Output "Shortcut created: $linkFile"
 }
-Write-Output 'Installation complete. Run Launch-DSH.vbs or the DSH Launcher shortcut.'
+Write-Output 'Installation complete. Run Launch-DSH.vbs or the Sental DSH Preflight shortcut.'

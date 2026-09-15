@@ -1,6 +1,6 @@
 # Dependencies
 
-DSH Launcher uses these separately distributed projects:
+Sental DSH Preflight uses these separately distributed projects:
 
 | Project | Use | License |
 | --- | --- | --- |
